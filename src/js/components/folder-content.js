@@ -43,6 +43,10 @@ let FolderContent = React.createClass({
         }
     },
 
+    handleDelete: function () {
+        this.props.onDelete(this.props.id);
+    },
+
     renderIndent: function () {
         let depth = this.props.depth,
             depthArr = [],
@@ -72,10 +76,10 @@ let FolderContent = React.createClass({
         );
     },
 
-    renderButtons: function() {
+    renderButtons: function () {
         return (
             <ul className="cta-buttons">
-                <li>⛌</li>
+                <li onClick={this.handleDelete}>⛌</li>
             </ul>
         );
     },

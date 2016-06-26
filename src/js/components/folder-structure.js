@@ -2,6 +2,7 @@ let React = require('react');
 let FolderContent = require('./folder-content');
 
 let FolderStructure = React.createClass({
+
     getInitialState: function () {
         return {
             contents: this.props.contents
@@ -10,11 +11,22 @@ let FolderStructure = React.createClass({
 
     onIndent: function (id) {
         let contents = this.state.contents,
+            content,
+            previousContent,
             i;
 
         for (i = 0; i < contents.length; i++) {
-            if (contents[i].id === id) {
-                contents[i].depth = contents[i].depth + 1;
+            content = contents[i];
+            previousContent = (i > 0) ? contents[i - 1] : null;
+            if (content.id === id) {
+                if (content.depth === 1) {
+                    alert('Can not indent root folder.');
+                } else if (!!previousContent && (content.depth - previousContent.depth) === 1) {
+                    alert('Can not indent this item.');
+                } else {
+                    content.depth = content.depth + 1;
+                }
+                break;
             }
         }
         this.setState({
@@ -24,16 +36,46 @@ let FolderStructure = React.createClass({
 
     onUnIndent: function (id) {
         let contents = this.state.contents,
+            content,
+            previousContent,
             i;
 
         for (i = 0; i < contents.length; i++) {
-            if (contents[i].id === id) {
-                contents[i].depth = contents[i].depth - 1;
+            content = contents[i];
+            previousContent = (i > 0) ? contents[i - 1] : null;
+
+            if (content.id === id) {
+                if (content.depth === 1) {
+                    alert('Can not un indent root folder.');
+                } else if (content.depth === 2) {
+                    alert('Can not indent this item.');
+                } else {
+                    content.depth = content.depth - 1;
+                }
+                break;
             }
         }
         this.setState({
             contents: contents
         });
+    },
+
+    onDelete: function (id) {
+        let contents = this.state.contents,
+            i;
+        if (id === 1) {
+            alert('Can not remove root element.');
+        } else {
+            for (i = 0; i < contents.length; i++) {
+                if (contents[i].id === id) {
+                    contents.splice(i, 1);
+                    break;
+                }
+            }
+            this.setState({
+                contents: contents
+            });
+        }
     },
 
     addNewContent: function () {
@@ -62,6 +104,7 @@ let FolderStructure = React.createClass({
                             id={content.id}
                             name={content.name}
                             depth={content.depth}
+                            onDelete={this.onDelete}
                             onIndent={this.onIndent}
                             onUnIndent={this.onUnIndent}
                         />
