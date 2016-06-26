@@ -36,6 +36,22 @@ let FolderStructure = React.createClass({
         });
     },
 
+    addNewContent: function () {
+        let contents = this.state.contents,
+            newContent = {
+                name: 'file name'
+            },
+            lastContent = contents[contents.length - 1];
+
+        newContent.id = lastContent.id + 1;
+        newContent.depth = lastContent.depth;
+        contents.push(newContent);
+        this.setState({
+            contents: contents
+        });
+
+    },
+
     render: function () {
         return (
             <div className="folder-structure">
@@ -51,6 +67,12 @@ let FolderStructure = React.createClass({
                         />
                     }.bind(this))
                 }
+                <div onClick={this.addNewContent} className="add-new folder-content">
+                    <ul className="cta-buttons">
+                        <li onClick="">⛌</li>
+                    </ul>
+                    <span className='name'>{''}</span>
+                </div>
 
             </div>
         );
