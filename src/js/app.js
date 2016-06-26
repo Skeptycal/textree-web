@@ -1,19 +1,38 @@
 'use strict';
 
 let React = require('react');
-let In = require('./in');
-let list = [
-    'app',
-    '&nbsp;&nbsp;&nbsp;&nbsp;src',
-    '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;main.js',
-    '&nbsp;&nbsp;&nbsp;&nbsp;resources',
-    '&nbsp;&nbsp;&nbsp;&nbsp;index.html'
+let FolderStructure = require('./components/folder-structure');
+let folderContents = [
+    {
+        id: 1,
+        name: 'app',
+        depth: 1
+    },
+    {
+        id: 2,
+        name: 'src',
+        depth: 2
+    },
+    {
+        id: 3,
+        name: 'main.js',
+        depth: 3
+    },
+    {
+        id: 4,
+        name: 'resources',
+        depth: 2
+    },
+    {
+        id: 5,
+        name: 'bundle.js',
+        depth: 3
+    }
 ];
-
 let App = React.createClass({
     render: function () {
         return (
-            <In list={list} />
+            <FolderStructure contents={folderContents}/>
         );
     }
 });

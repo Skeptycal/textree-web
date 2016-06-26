@@ -107,3 +107,28 @@ header {
 #app {
   text-align: left;
 }
+
+.indent {
+  display: inline-block;
+  width: 20px;
+  color: #ccc;
+
+  &:after {
+    content: '•';
+    font-size: 1.2rem;
+  }
+}
+
+.folder-content .name {
+  &:hover {
+    &:after {
+      display: inline-block;
+      content: '✎';
+      color: #777;
+      margin-left: 10px;
+      font-size: 1rem;
+      -webkit-transform: scale(-1, 1);
+      transform: scale(-1, 1);
+    }
+  }
+}

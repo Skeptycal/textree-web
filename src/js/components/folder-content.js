@@ -2,33 +2,92 @@
 
 let React = require('react');
 
-let Item = React.createClass({
+let FolderContent = React.createClass({
 
     getInitialState: function () {
         return {
-            editing: false
+            editing: false,
+            name: this.props.name
         }
     },
 
-    handleClick: function () {
+    startEditing: function () {
         this.setState({
-            editing: !this.state.editing
+            editing: true
+        }, function () {
+            this.refs.nameInput.focus();
         });
     },
-    createLineItem: function (item) {
-        return {
-            __html: item
+
+    cancelEditing: function () {
+        this.setState({
+            editing: false
+        });
+    },
+
+    handleNameChange: function (event) {
+        this.setState({
+            name: event.target.value
+        });
+
+    },
+
+    handleKeyPress: function (event) {
+        let key = event.key;
+        if (key === 'Enter' || key === 'Escape') {
+            this.cancelEditing();
+        } else if (event.shiftKey && key === 'Tab') {
+            this.props.onUnIndent(this.props.id);
+        } else if (key === 'Tab') {
+            this.props.onIndent(this.props.id);
         }
+    },
+
+    renderIndent: function () {
+        let depth = this.props.depth,
+            depthArr = [],
+            i;
+
+        for (i = 1; i < depth; i++) {
+            depthArr.push(<span key={'indent'+i} className='indent'></span>);
+        }
+        return depthArr;
+    },
+
+    renderInput: function () {
+        return (
+            <input
+                ref="nameInput"
+                type="text"
+                onKeyDown={this.handleKeyPress}
+                onChange={this.handleNameChange}
+                onBlur={this.cancelEditing}
+                value={this.state.name}/>
+        );
+    },
+
+    renderName: function () {
+        return (
+            <span onClick={this.startEditing} className='name'>{this.state.name}</span>
+        );
     },
 
     render: function () {
-        let editElm = <input type="text" value={this.props.text}/>;
-        let divElm = <div onClick={this.handleClick} dangerouslySetInnerHTML={this.createLineItem(this.props.text)}/>;
+        let elm;
+
+        if (this.state.editing) {
+            elm = this.renderInput();
+        } else {
+            elm = this.renderName();
+        }
+
         return (
-            this.state.editing ? editElm : divElm
-        )
-        ;
+            <div className='folder-content'>
+                {this.renderIndent()}
+                {elm}
+            </div>
+        );
     }
 });
 
-module.exports = Item;
+module.exports = FolderContent;
