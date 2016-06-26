@@ -72,6 +72,14 @@ let FolderContent = React.createClass({
         );
     },
 
+    renderButtons: function() {
+        return (
+            <ul className="cta-buttons">
+                <li>⛌</li>
+            </ul>
+        );
+    },
+
     render: function () {
         let elm;
 
@@ -82,7 +90,8 @@ let FolderContent = React.createClass({
         }
 
         return (
-            <div className='folder-content'>
+            <div className='folder-content group'>
+                {this.renderButtons()}
                 {this.renderIndent()}
                 {elm}
             </div>
